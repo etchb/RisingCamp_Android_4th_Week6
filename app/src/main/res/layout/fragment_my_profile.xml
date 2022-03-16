@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".src.main.myPage.MyPageFragment">
+    tools:context=".src.main.myProfile.MyProfileFragment">
 
     <Button
         android:id="@+id/button_change_counter_text"

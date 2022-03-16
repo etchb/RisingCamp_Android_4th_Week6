@@ -1,16 +1,16 @@
-package com.bhongj.rc_week6.src.main.home
+package com.bhongj.rc_week6.src.main.search
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.bhongj.rc_week6.R
 import com.bhongj.rc_week6.config.BaseFragment
-import com.bhongj.rc_week6.databinding.FragmentHomeBinding
-import com.bhongj.rc_week6.src.main.home.models.PostSignUpRequest
-import com.bhongj.rc_week6.src.main.home.models.SignUpResponse
-import com.bhongj.rc_week6.src.main.home.models.UserResponse
+import com.bhongj.rc_week6.databinding.FragmentSearchBinding
+import com.bhongj.rc_week6.src.main.search.models.PostSignUpRequest
+import com.bhongj.rc_week6.src.main.search.models.SignUpResponse
+import com.bhongj.rc_week6.src.main.search.models.UserResponse
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home),
+class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search),
     HomeFragmentInterface {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

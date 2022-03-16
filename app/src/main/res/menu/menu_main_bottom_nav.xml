@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_main_btm_nav_home"
-        android:icon="@drawable/ic_total_view_unselected"
-        app:showAsAction="always"
-        android:enabled="true"
-        android:checkable="true"
-        android:title="@string/main_btm_nav_home_title" />
-
+        android:id="@+id/btm_item_search"
+        android:title="친구목록"
+        android:icon="@drawable/btm_navi_search"/>
     <item
-        android:id="@+id/menu_main_btm_nav_my_page"
-        android:icon="@drawable/ic_setting_view_unselected"
-        app:showAsAction="always"
-        android:enabled="true"
-        android:title="@string/main_btm_nav_my_page_title" />
-
+        android:id="@+id/btm_item_discount"
+        android:title="채팅목록"
+        android:icon="@drawable/btm_navi_discount"/>
+    <item
+        android:id="@+id/btm_item_plus"
+        android:title="View"
+        android:icon="@drawable/btm_plus"/>
+    <item
+        android:id="@+id/btm_item_issue"
+        android:title="Shop"
+        android:icon="@drawable/btm_navi_issue"/>
+    <item
+        android:id="@+id/btm_item_my_profile"
+        android:title="설정"
+        android:icon="@drawable/btm_navi_my_profile"/>
 </menu>
