@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/drawable-xxxhdpi/ripple_background.xml" value="0.2155" />
+        <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/drawable-xxxhdpi/ripple_background_rec.xml" value="0.2155" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/drawable-xxxhdpi/textbox_border_top.xml" value="0.2155" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/drawable/main_btm_nav_item_color.xml" value="0.1955" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/activity_login.xml" value="0.20833333333333334" />
@@ -13,6 +15,7 @@
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/fragment_home.xml" value="0.1875" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/fragment_issue.xml" value="0.2015625" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/fragment_my_page.xml" value="0.1875" />
+        <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/fragment_my_profile.xml" value="0.25" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/fragment_search.xml" value="0.2015625" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/menu/bottom_navi.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/menu/menu_main_bottom_nav.xml" value="0.1875" />

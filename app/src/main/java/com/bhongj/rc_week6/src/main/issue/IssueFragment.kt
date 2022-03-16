@@ -12,8 +12,7 @@ import com.bhongj.rc_week6.databinding.FragmentIssueBinding
 class IssueFragment :
     BaseFragment<FragmentIssueBinding>(FragmentIssueBinding::bind, R.layout.fragment_issue) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 }
