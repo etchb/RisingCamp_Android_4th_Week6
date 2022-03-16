@@ -1,58 +1,91 @@
 package com.bhongj.rc_week6.src.main.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.bhongj.rc_week6.R
 import com.bhongj.rc_week6.config.BaseFragment
 import com.bhongj.rc_week6.databinding.FragmentSearchBinding
-import com.bhongj.rc_week6.src.main.search.models.PostSignUpRequest
-import com.bhongj.rc_week6.src.main.search.models.SignUpResponse
-import com.bhongj.rc_week6.src.main.search.models.UserResponse
+import com.bhongj.rc_week6.src.main.MainActivity
+import com.bhongj.rc_week6.src.main.search.restrntModel.GyungkiRestrntResponse
+import com.bhongj.rc_week6.src.main.search.restrntModel.RestrntData
+import com.bhongj.rc_week6.src.main.search.restrntModel.RestrntDataSize
 
-class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search),
-    HomeFragmentInterface {
+class SearchFragment :
+    BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search),
+    SearchFragmentInterface {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getRestaurantSize()
+        getRestaurantDataList()
+
         binding.homeButtonTryGetJwt.setOnClickListener {
-            showLoadingDialog(requireContext())
-            HomeService(this).tryGetUsers()
-        }
-
-        binding.homeBtnTryPostHttpMethod.setOnClickListener {
-            val email = binding.homeEtId.text.toString()
-            val password = binding.homeEtPw.text.toString()
-            val postRequest = PostSignUpRequest(email = email, password = password,
-                confirmPassword = password, nickname = "test", phoneNumber = "010-0000-0000")
-            showLoadingDialog(requireContext())
-            HomeService(this).tryPostSignUp(postRequest)
+            Log.d("TEST RestrntDataSize", RestrntDataSize.toString())
+            Log.d("TEST RestrntData.size", RestrntData.size.toString())
         }
     }
 
-    override fun onGetUserSuccess(response: UserResponse) {
-        dismissLoadingDialog()
-        for (User in response.result) {
-            Log.d("HomeFragment", User.toString())
-        }
-        binding.homeButtonTryGetJwt.text = response.message
-        showCustomToast("Get JWT 성공")
+    override fun onGetDataSuccess(response: GyungkiRestrntResponse) {
+//        dismissLoadingDialog()
+        val result = response.SafetyRestrntInfo
+        RestrntData.addAll(result[1].row)
     }
 
-    override fun onGetUserFailure(message: String) {
-        dismissLoadingDialog()
+    override fun onGetDataSizeSuccess(response: GyungkiRestrntResponse) {
+        RestrntDataSize = response.SafetyRestrntInfo[0].head[0].list_total_count
+    }
+
+    override fun onGetDataFailure(message: String) {
+//        dismissLoadingDialog()
         showCustomToast("오류 : $message")
     }
 
-    override fun onPostSignUpSuccess(response: SignUpResponse) {
-        dismissLoadingDialog()
-        binding.homeBtnTryPostHttpMethod.text = response.message
-        response.message?.let { showCustomToast(it) }
+    fun getRestaurantSize() {
+        SearchService(this).tryGetRestaurantDataSize(getString(R.string.API_KEY), "json")
     }
 
-    override fun onPostSignUpFailure(message: String) {
-        dismissLoadingDialog()
-        showCustomToast("오류 : $message")
+    fun getRestaurantDataList() {
+        val dataSizeMin = 1000
+        Thread() {
+            while (true) {
+                Thread.sleep(100)
+                Log.d("TEST", "RestrntDataSize = $RestrntDataSize")
+                if (RestrntDataSize >= 0) {
+                    break
+                }
+            }
+            if (RestrntDataSize > 0) {
+                for (pageIdx in 1..(RestrntDataSize / 1000)) {
+                    if (pageIdx < dataSizeMin/1000+1) {
+                        SearchService(this).tryGetRestaurantData(
+                            getString(R.string.API_KEY),
+                            "json",
+                            pageIdx,
+                            1000
+                        )
+                    } else {
+                        break
+                    }
+                }
+//                SearchService(this).tryGetRestaurantData(
+//                    getString(R.string.API_KEY), "json", (RestrntDataSize / 1000) + 1,
+//                    RestrntDataSize % 1000
+//                )
+            }
+        }.start()
     }
+
+//    override fun onPostSignUpSuccess(response: SignUpResponse) {
+//        dismissLoadingDialog()
+//        binding.homeBtnTryPostHttpMethod.text = response.message
+//        response.message?.let { showCustomToast(it) }
+//    }
+//
+//    override fun onPostSignUpFailure(message: String) {
+//        dismissLoadingDialog()
+//        showCustomToast("오류 : $message")
+//    }
 }
