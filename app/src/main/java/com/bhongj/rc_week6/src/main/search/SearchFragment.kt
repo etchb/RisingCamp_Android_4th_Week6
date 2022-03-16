@@ -1,13 +1,11 @@
 package com.bhongj.rc_week6.src.main.search
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.bhongj.rc_week6.R
 import com.bhongj.rc_week6.config.BaseFragment
 import com.bhongj.rc_week6.databinding.FragmentSearchBinding
-import com.bhongj.rc_week6.src.main.MainActivity
 import com.bhongj.rc_week6.src.main.search.restrntModel.GyungkiRestrntResponse
 import com.bhongj.rc_week6.src.main.search.restrntModel.RestrntData
 import com.bhongj.rc_week6.src.main.search.restrntModel.RestrntDataSize
@@ -29,7 +27,7 @@ class SearchFragment :
     }
 
     override fun onGetDataSuccess(response: GyungkiRestrntResponse) {
-//        dismissLoadingDialog()
+        dismissLoadingDialog()
         val result = response.SafetyRestrntInfo
         RestrntData.addAll(result[1].row)
     }
@@ -39,7 +37,7 @@ class SearchFragment :
     }
 
     override fun onGetDataFailure(message: String) {
-//        dismissLoadingDialog()
+        dismissLoadingDialog()
         showCustomToast("오류 : $message")
     }
 
@@ -48,6 +46,7 @@ class SearchFragment :
     }
 
     fun getRestaurantDataList() {
+        showLoadingDialog(requireContext())
         val dataSizeMin = 1000
         Thread() {
             while (true) {
@@ -59,7 +58,7 @@ class SearchFragment :
             }
             if (RestrntDataSize > 0) {
                 for (pageIdx in 1..(RestrntDataSize / 1000)) {
-                    if (pageIdx < dataSizeMin/1000+1) {
+                    if (pageIdx < dataSizeMin / 1000 + 1) {
                         SearchService(this).tryGetRestaurantData(
                             getString(R.string.API_KEY),
                             "json",

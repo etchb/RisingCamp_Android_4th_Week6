@@ -1,7 +1,5 @@
 package com.bhongj.rc_week6.src.main.search
 
-import com.bhongj.rc_week6.src.main.search.models.SignUpResponse
-import com.bhongj.rc_week6.src.main.search.models.UserResponse
 import com.bhongj.rc_week6.src.main.search.restrntModel.GyungkiRestrntResponse
 
 interface SearchFragmentInterface {
