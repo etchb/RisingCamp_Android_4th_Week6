@@ -7,10 +7,28 @@
     android:background="@color/white"
     tools:context=".src.splash.SplashActivity">
 
-    <ImageView
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/softsquared_logo"
+        android:src="@drawable/splash_mango_plate"
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.35"
+        app:layout_constraintWidth_percent="0.45"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/splash_company"
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintWidth_percent="0.25"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
