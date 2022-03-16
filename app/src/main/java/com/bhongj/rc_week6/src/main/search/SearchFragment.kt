@@ -1,8 +1,13 @@
 package com.bhongj.rc_week6.src.main.search
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.bhongj.rc_week6.R
 import com.bhongj.rc_week6.config.BaseFragment
 import com.bhongj.rc_week6.databinding.FragmentSearchBinding
@@ -14,15 +19,66 @@ class SearchFragment :
     BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search),
     SearchFragmentInterface {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (AdResourseData.size == 0) {
+            AdResourseData.add(R.drawable.ad1)
+            AdResourseData.add(R.drawable.ad2)
+            AdResourseData.add(R.drawable.ad3)
+            AdResourseData.add(R.drawable.ad4)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view , savedInstanceState)
 
-        getRestaurantSize()
-        getRestaurantDataList()
+        if (RestrntDataSize < 0) {
+            getRestaurantSize()
+            getRestaurantDataList()
+        }
 
-        binding.homeButtonTryGetJwt.setOnClickListener {
-            Log.d("TEST RestrntDataSize", RestrntDataSize.toString())
-            Log.d("TEST RestrntData.size", RestrntData.size.toString())
+        binding.txtRegion.paintFlags = binding.txtRegion.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+
+        val pagerAdapter = AdSlidePagerAdapter(requireActivity())
+
+        val mPager = binding.vpAd
+        mPager.adapter = pagerAdapter
+        mPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        val mIndicator = binding.vpAdIndi
+        mIndicator.setViewPager(mPager)
+        mIndicator.createIndicators(pagerAdapter.itemCount, 0)
+
+        mPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                if (positionOffsetPixels == 0) {
+                    mPager.currentItem = position
+                }
+            }
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                mIndicator.animatePageSelected(position % pagerAdapter.itemCount)
+            }
+        })
+    }
+
+    private inner class AdSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+        override fun getItemCount(): Int = AdResourseData.size
+
+        override fun createFragment(position: Int): Fragment {
+            return when(position) {
+                in 0 until this.itemCount -> {
+                    AdSlideFragment(AdResourseData[position])
+                }
+                else -> AdSlideFragment(R.drawable.ad1)
+            }
         }
     }
 
@@ -73,6 +129,28 @@ class SearchFragment :
 //                    getString(R.string.API_KEY), "json", (RestrntDataSize / 1000) + 1,
 //                    RestrntDataSize % 1000
 //                )
+            }
+            while(true) {
+                Thread.sleep(100)
+                Log.d("TEST", "RestrntData.size = $RestrntData.size")
+                if ((RestrntDataSize == 0) or (RestrntData.size > 0)) {
+                    break
+                }
+            }
+            for (len in 1..RestrntData.size/6) {
+                var idx = 0
+                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
+                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food1
+                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
+                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food2
+                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
+                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food3
+                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
+                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food4
+                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
+                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food5
+                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
+                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food6
             }
         }.start()
     }
