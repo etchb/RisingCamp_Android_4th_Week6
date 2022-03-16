@@ -15,10 +15,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".src.splash.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true" >
+            android:name=".src.login.LoginActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,10 +25,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".src.main.MainActivity"
+            android:name=".src.splash.SplashActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true" >
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".src.main.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
+                <data
+                    android:host="oauth"
+                    android:scheme="@string/kakao_native_key" />
+            </intent-filter>
         </activity>
     </application>
+
 </manifest>

@@ -4,9 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/drawable/main_btm_nav_item_color.xml" value="0.1955" />
+        <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/activity_login.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/activity_main.xml" value="0.1875" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/activity_splash.xml" value="0.1875" />
-        <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/dialog_loading.xml" value="0.1875" />
+        <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/dialog_loading.xml" value="0.22" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/fragment_home.xml" value="0.1875" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/layout/fragment_my_page.xml" value="0.1875" />
         <entry key="..\:/Users/wanty/AndroidStudioProjects/RC_Week6/app/src/main/res/menu/menu_main_bottom_nav.xml" value="0.1875" />

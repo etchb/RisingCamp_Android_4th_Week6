@@ -11,6 +11,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' } // add for Spinkit
+        maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' } // add for KakaoTalkAPI
     }
 }
 rootProject.name = "RC_Week6"

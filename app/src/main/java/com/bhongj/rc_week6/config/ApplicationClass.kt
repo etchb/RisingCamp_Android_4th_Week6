@@ -1,12 +1,16 @@
 package com.bhongj.rc_week6.config
 
 import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
+import com.bhongj.rc_week6.R
+import com.kakao.sdk.common.KakaoSdk
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+
 
 // 앱이 실행될때 1번만 실행이 됩니다.
 class ApplicationClass : Application() {
@@ -28,6 +32,8 @@ class ApplicationClass : Application() {
 
         // Retrofit 인스턴스, 앱 실행시 한번만 생성하여 사용합니다.
         lateinit var sRetrofit: Retrofit
+
+        var appContext : Context? = null
     }
 
     // 앱이 처음 생성되는 순간, SP를 새로 만들어주고, 레트로핏 인스턴스를 생성합니다.
@@ -37,6 +43,9 @@ class ApplicationClass : Application() {
             applicationContext.getSharedPreferences("SOFTSQUARED_TEMPLATE_APP", MODE_PRIVATE)
         // 레트로핏 인스턴스 생성
         initRetrofitInstance()
+
+        appContext = this
+        KakaoSdk.init(this,getString(R.string.kakao_app_key))
     }
 
     // 레트로핏 인스턴스를 생성하고, 레트로핏에 각종 설정값들을 지정해줍니다.
