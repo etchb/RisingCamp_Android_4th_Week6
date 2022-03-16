@@ -46,5 +46,4 @@ class FoodRcvAdapter(private val dataList: MutableList<Row>) :
     }
 
     override fun getItemCount() = dataList.size
-
 }

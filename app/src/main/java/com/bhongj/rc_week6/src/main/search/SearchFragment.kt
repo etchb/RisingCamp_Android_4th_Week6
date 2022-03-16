@@ -33,7 +33,7 @@ class SearchFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view , savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
 
         if (RestrntDataSize < 0) {
             getRestaurantSize()
@@ -82,7 +82,7 @@ class SearchFragment :
         override fun getItemCount(): Int = AdResourseData.size
 
         override fun createFragment(position: Int): Fragment {
-            return when(position) {
+            return when (position) {
                 in 0 until this.itemCount -> {
                     AdSlideFragment(AdResourseData[position])
                 }
@@ -120,7 +120,6 @@ class SearchFragment :
         Thread() {
             while (true) {
                 Thread.sleep(100)
-                Log.d("TEST", "RestrntDataSize = $RestrntDataSize")
                 if (RestrntDataSize >= 0) {
                     break
                 }
@@ -143,27 +142,32 @@ class SearchFragment :
 //                    RestrntDataSize % 1000
 //                )
             }
-            while(true) {
+            while (true) {
                 Thread.sleep(100)
-                Log.d("TEST", "RestrntData.size = $RestrntData.size")
                 if ((RestrntDataSize == 0) or (RestrntData.size > 0)) {
                     break
                 }
             }
-            for (len in 1..RestrntData.size/6) {
+            for (len in 1..RestrntData.size / 6) {
                 var idx = 0
-                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
-                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food1
-                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
-                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food2
-                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
-                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food3
-                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
-                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food4
-                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
-                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food5
-                RestrntData[(len-1)*6+idx].RATE = (((Math.random() * 30).toInt() + 21).toFloat()/10f)
-                RestrntData[(len-1)*6+idx++].PIC = R.drawable.food6
+                RestrntData[(len - 1) * 6 + idx].RATE =
+                    (((Math.random() * 30).toInt() + 21).toFloat() / 10f)
+                RestrntData[(len - 1) * 6 + idx++].PIC = R.drawable.food1
+                RestrntData[(len - 1) * 6 + idx].RATE =
+                    (((Math.random() * 30).toInt() + 21).toFloat() / 10f)
+                RestrntData[(len - 1) * 6 + idx++].PIC = R.drawable.food2
+                RestrntData[(len - 1) * 6 + idx].RATE =
+                    (((Math.random() * 30).toInt() + 21).toFloat() / 10f)
+                RestrntData[(len - 1) * 6 + idx++].PIC = R.drawable.food3
+                RestrntData[(len - 1) * 6 + idx].RATE =
+                    (((Math.random() * 30).toInt() + 21).toFloat() / 10f)
+                RestrntData[(len - 1) * 6 + idx++].PIC = R.drawable.food4
+                RestrntData[(len - 1) * 6 + idx].RATE =
+                    (((Math.random() * 30).toInt() + 21).toFloat() / 10f)
+                RestrntData[(len - 1) * 6 + idx++].PIC = R.drawable.food5
+                RestrntData[(len - 1) * 6 + idx].RATE =
+                    (((Math.random() * 30).toInt() + 21).toFloat() / 10f)
+                RestrntData[(len - 1) * 6 + idx++].PIC = R.drawable.food6
             }
         }.start()
     }
