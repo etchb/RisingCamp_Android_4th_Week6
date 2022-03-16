@@ -1,11 +1,13 @@
 package com.bhongj.rc_week6.src.main.search
 
+import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bhongj.rc_week6.R
@@ -67,6 +69,13 @@ class SearchFragment :
                 mIndicator.animatePageSelected(position % pagerAdapter.itemCount)
             }
         })
+
+        val restrntDataFil = RestrntData.filter { it.SIGNGU_NM == "화성시" }.toMutableList()
+        val adapter = FoodRcvAdapter(restrntDataFil)
+        val foodRcyView = binding.rcvFood
+        foodRcyView.layoutManager = GridLayoutManager(context, 2)
+        foodRcyView.setHasFixedSize(true)
+        foodRcyView.adapter = adapter
     }
 
     private inner class AdSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
@@ -82,10 +91,14 @@ class SearchFragment :
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onGetDataSuccess(response: GyungkiRestrntResponse) {
         dismissLoadingDialog()
         val result = response.SafetyRestrntInfo
         RestrntData.addAll(result[1].row)
+
+//        binding.rcvFood.adapter?.notifyDataSetChanged()
+//        Log.d("TEST RestrntData.size22", RestrntData.size.toString())
     }
 
     override fun onGetDataSizeSuccess(response: GyungkiRestrntResponse) {
