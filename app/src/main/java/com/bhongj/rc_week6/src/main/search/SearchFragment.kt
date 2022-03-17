@@ -18,7 +18,7 @@ class SearchFragment(val btmNav: BottomNavigationView) :
     BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search) {
 
     private lateinit var callback: OnBackPressedCallback
-    val fragment = arrayListOf<Fragment>(ScrollFragment(), GoogleMapFragment())
+    val fragmentList = arrayListOf<Fragment>(ScrollFragment(), GoogleMapFragment())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,19 +45,19 @@ class SearchFragment(val btmNav: BottomNavigationView) :
 
         binding.txtRegion.paintFlags = binding.txtRegion.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
-        childFragmentManager.beginTransaction().replace(R.id.frmlay_search, fragment[0])
+        childFragmentManager.beginTransaction().replace(R.id.frmlay_search, fragmentList[0])
             .addToBackStack(null)
             .commitAllowingStateLoss()
 
         binding.btnMap.setOnClickListener {
-            childFragmentManager.beginTransaction().add(R.id.frmlay_search, fragment[1])
+            childFragmentManager.beginTransaction().add(R.id.frmlay_search, fragmentList[1])
 //                .addToBackStack(null)
                 .commitAllowingStateLoss()
             btmNav.visibility = View.GONE
         }
 
         binding.btnRegionSearch.setOnClickListener {
-            childFragmentManager.beginTransaction().remove(fragment[1])
+            childFragmentManager.beginTransaction().remove(fragmentList[1])
                 .commitAllowingStateLoss()
         }
 
@@ -130,10 +130,10 @@ class SearchFragment(val btmNav: BottomNavigationView) :
         super.onAttach(context)
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (fragment[1] in childFragmentManager.fragments) {
+                if (fragmentList[1] in childFragmentManager.fragments) {
                     Log.d("TEST fragment[1]", "exist")
                     childFragmentManager.beginTransaction()
-                        .remove(fragment[1])
+                        .remove(fragmentList[1])
                         .commitAllowingStateLoss()
                 }
             }

@@ -1,7 +1,9 @@
 package com.bhongj.rc_week6.src.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.bhongj.rc_week6.R
 import com.bhongj.rc_week6.config.ApplicationClass
 import com.bhongj.rc_week6.config.BaseActivity
@@ -20,51 +22,67 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.frmlay_main, SearchFragment(binding.bottomNav))
-            .commitAllowingStateLoss()
-
         binding.bottomNav.itemIconTintList = null
+
         initBottomNavigation()
     }
 
     private fun initBottomNavigation() {
+        val fragmentList = arrayListOf<Fragment>()
+
+        if (ApplicationClass.sSharedPreferences.getBoolean("isAutoLogin", false)) {
+            fragmentList.addAll(arrayListOf<Fragment>(SearchFragment(binding.bottomNav), DiscountFragment(), IssueFragment(), MyKakaoProfileFragment()))
+        } else {
+            fragmentList.addAll(arrayListOf<Fragment>(SearchFragment(binding.bottomNav), DiscountFragment(), IssueFragment(), MyProfileFragment()))
+        }
+
+        for (fragment in fragmentList) {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.frmlay_main, fragment)
+                .hide(fragment)
+                .commitAllowingStateLoss()
+        }
+        supportFragmentManager.beginTransaction()
+            .show(fragmentList[0])
+            .commitAllowingStateLoss()
+        var showFragment = fragmentList[0]
+
         binding.bottomNav.setOnItemSelectedListener { it ->
             when (it.itemId) {
                 R.id.btm_item_search -> {
                     supportFragmentManager.beginTransaction()
 //                        .setCustomAnimations(androidx.appcompat.R.anim.abc_fade_in, androidx.appcompat.R.anim.abc_fade_out)
-                        .replace(R.id.frmlay_main, SearchFragment(binding.bottomNav))
+                        .show(fragmentList[0])
+                        .hide(showFragment)
                         .commitAllowingStateLoss()
+                    showFragment = fragmentList[0]
                     return@setOnItemSelectedListener true
                 }
                 R.id.btm_item_discount -> {
                     supportFragmentManager.beginTransaction()
 //                        .setCustomAnimations(androidx.appcompat.R.anim.abc_fade_in, androidx.appcompat.R.anim.abc_fade_out)
-                        .replace(R.id.frmlay_main, DiscountFragment())
-//                        .replace(R.id.frmlay_main, GoogleMapFragment())
+                        .show(fragmentList[1])
+                        .hide(showFragment)
                         .commitAllowingStateLoss()
+                    showFragment = fragmentList[1]
                     return@setOnItemSelectedListener true
                 }
                 R.id.btm_item_issue -> {
                     supportFragmentManager.beginTransaction()
 //                        .setCustomAnimations(androidx.appcompat.R.anim.abc_fade_in, androidx.appcompat.R.anim.abc_fade_out)
-                        .replace(R.id.frmlay_main, IssueFragment())
+                        .show(fragmentList[2])
+                        .hide(showFragment)
                         .commitAllowingStateLoss()
+                    showFragment = fragmentList[2]
                     return@setOnItemSelectedListener true
                 }
                 R.id.btm_item_my_profile -> {
-                    if (ApplicationClass.sSharedPreferences.getBoolean("isAutoLogin", false)) {
-                        supportFragmentManager.beginTransaction()
+                    supportFragmentManager.beginTransaction()
 //                        .setCustomAnimations(androidx.appcompat.R.anim.abc_fade_in, androidx.appcompat.R.anim.abc_fade_out)
-                            .replace(R.id.frmlay_main, MyKakaoProfileFragment())
-                            .commitAllowingStateLoss()
-                    } else {
-                        supportFragmentManager.beginTransaction()
-//                        .setCustomAnimations(androidx.appcompat.R.anim.abc_fade_in, androidx.appcompat.R.anim.abc_fade_out)
-                            .replace(R.id.frmlay_main, MyProfileFragment())
-                            .commitAllowingStateLoss()
-                    }
+                        .show(fragmentList[3])
+                        .hide(showFragment)
+                        .commitAllowingStateLoss()
+                    showFragment = fragmentList[3]
                     return@setOnItemSelectedListener true
                 }
             }
