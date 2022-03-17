@@ -3,6 +3,8 @@ package com.bhongj.rc_week6.src.main.search
 import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -13,9 +15,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bhongj.rc_week6.R
 import com.bhongj.rc_week6.config.BaseFragment
 import com.bhongj.rc_week6.databinding.FragmentSearchBinding
-import com.bhongj.rc_week6.src.main.search.restrntModel.GyungkiRestrntResponse
-import com.bhongj.rc_week6.src.main.search.restrntModel.RestrntData
-import com.bhongj.rc_week6.src.main.search.restrntModel.RestrntDataSize
+import com.bhongj.rc_week6.src.main.search.restrntModel.*
 
 class SearchFragment :
     BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search),
@@ -23,6 +23,9 @@ class SearchFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("TEST STEP", "onCreate")
+        Log.d("TEST pageIdx", pageIdx.toString())
+        Log.d("TEST preRestrntDataSize", preRestrntDataSize.toString())
 
         if (AdResourseData.size == 0) {
             AdResourseData.add(R.drawable.ad1)
@@ -34,6 +37,7 @@ class SearchFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("TEST STEP", "onViewCreated")
 
         if (RestrntDataSize < 0) {
             getRestaurantSize()
@@ -70,12 +74,40 @@ class SearchFragment :
             }
         })
 
-        val restrntDataFil = RestrntData.filter { it.SIGNGU_NM == "화성시" }.toMutableList()
+        restrntDataFil = RestrntData.filter { it.SIGNGU_NM == "화성시" }.toMutableList()
         val adapter = FoodRcvAdapter(restrntDataFil)
         val foodRcyView = binding.rcvFood
         foodRcyView.layoutManager = GridLayoutManager(context, 2)
         foodRcyView.setHasFixedSize(true)
         foodRcyView.adapter = adapter
+
+        binding.scrSearch.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (!v.canScrollVertically(1)) {
+                Log.d("TEST scroll", "End of list")
+                getRestaurantDataList()
+            }
+        }
+//        foodRcyView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//
+//                // 스크롤이 끝에 도달했는지 확인
+//                if (!foodRcyView.canScrollVertically(1)) {
+//                    Log.d("TEST scroll", "End of list")
+//                }
+//
+//                val lastVisibleItemPosition = (recyclerView.layoutManager as GridLayoutManager?)!!.findLastCompletelyVisibleItemPosition() // 화면에 보이는 마지막 아이템의 position
+//                val itemTotalCount = recyclerView.adapter!!.itemCount - 1 // 어댑터에 등록된 아이템의 총 개수 -1
+//                Log.d("TEST scroll itemTotalCount", itemTotalCount.toString())
+//                Log.d("TEST scroll lastVisibleItemPosition", lastVisibleItemPosition.toString())
+//
+//
+//                // 스크롤이 끝에 도달했는지 확인
+//                if (lastVisibleItemPosition == itemTotalCount) {
+//                    Log.d("TEST scroll", "End of list")
+//                }
+//            }
+//        })
     }
 
     private inner class AdSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
@@ -116,7 +148,7 @@ class SearchFragment :
 
     fun getRestaurantDataList() {
         showLoadingDialog(requireContext())
-        val dataSizeMin = 1000
+        val onceGetDataSize = 1000
         Thread() {
             while (true) {
                 Thread.sleep(100)
@@ -125,26 +157,39 @@ class SearchFragment :
                 }
             }
             if (RestrntDataSize > 0) {
-                for (pageIdx in 1..(RestrntDataSize / 1000)) {
-                    if (pageIdx < dataSizeMin / 1000 + 1) {
-                        SearchService(this).tryGetRestaurantData(
-                            getString(R.string.API_KEY),
-                            "json",
-                            pageIdx,
-                            1000
-                        )
-                    } else {
-                        break
-                    }
+                if (RestrntDataSize - RestrntData.size >= onceGetDataSize) {
+                    pageIdx++
+                    preRestrntDataSize = RestrntData.size
+                    SearchService(this).tryGetRestaurantData(
+                        getString(R.string.API_KEY),
+                        "json",
+                        pageIdx,
+                        onceGetDataSize
+                    )
+                } else if (RestrntDataSize - RestrntData.size > 0) {
+                    pageIdx++
+                    preRestrntDataSize = RestrntData.size
+                    SearchService(this).tryGetRestaurantData(
+                        getString(R.string.API_KEY),
+                        "json",
+                        pageIdx,
+                        RestrntDataSize - RestrntData.size
+                    )
                 }
-//                SearchService(this).tryGetRestaurantData(
-//                    getString(R.string.API_KEY), "json", (RestrntDataSize / 1000) + 1,
-//                    RestrntDataSize % 1000
-//                )
             }
             while (true) {
                 Thread.sleep(100)
-                if ((RestrntDataSize == 0) or (RestrntData.size > 0)) {
+                if ((RestrntDataSize == 0) or (RestrntData.size > preRestrntDataSize)) {
+                    preRestrntDataSize = RestrntData.size
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.post {
+                        restrntDataFil.addAll(
+                            RestrntData.takeLast(1000).filter { it.SIGNGU_NM == "화성시" }
+                                .toMutableList()
+                        )
+                        binding.rcvFood.adapter?.notifyDataSetChanged()
+                        Log.d("TEST handler", "notifyDataSetChanged")
+                    }
                     break
                 }
             }
