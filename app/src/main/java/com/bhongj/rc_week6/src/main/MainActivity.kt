@@ -11,21 +11,17 @@ import com.bhongj.rc_week6.src.main.issue.IssueFragment
 import com.bhongj.rc_week6.src.main.myProfile.MyKakaoProfileFragment
 import com.bhongj.rc_week6.src.main.myProfile.MyProfileFragment
 import com.bhongj.rc_week6.src.main.search.SearchFragment
-import com.bhongj.rc_week6.src.main.search.map.GoogleMapFragment
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
+    var backKeyPressedTime: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager.beginTransaction().replace(R.id.frmlay_main, SearchFragment())
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frmlay_main, SearchFragment(binding.bottomNav))
             .commitAllowingStateLoss()
 
         binding.bottomNav.itemIconTintList = null
@@ -38,15 +34,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 R.id.btm_item_search -> {
                     supportFragmentManager.beginTransaction()
 //                        .setCustomAnimations(androidx.appcompat.R.anim.abc_fade_in, androidx.appcompat.R.anim.abc_fade_out)
-                        .replace(R.id.frmlay_main, SearchFragment())
+                        .replace(R.id.frmlay_main, SearchFragment(binding.bottomNav))
                         .commitAllowingStateLoss()
                     return@setOnItemSelectedListener true
                 }
                 R.id.btm_item_discount -> {
                     supportFragmentManager.beginTransaction()
 //                        .setCustomAnimations(androidx.appcompat.R.anim.abc_fade_in, androidx.appcompat.R.anim.abc_fade_out)
-//                        .replace(R.id.frmlay_main, DiscountFragment())
-                        .replace(R.id.frmlay_main, GoogleMapFragment())
+                        .replace(R.id.frmlay_main, DiscountFragment())
+//                        .replace(R.id.frmlay_main, GoogleMapFragment())
                         .commitAllowingStateLoss()
                     return@setOnItemSelectedListener true
                 }
@@ -73,6 +69,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
             false
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (binding.bottomNav.visibility == View.GONE) {
+            binding.bottomNav.visibility = View.VISIBLE
+        } else {
+            if (System.currentTimeMillis() > backKeyPressedTime + 1000) {
+                backKeyPressedTime = System.currentTimeMillis()
+                showCustomToast("뒤로가기 버튼을 한번 더 누르면 종료합니다.")
+                return
+            }
+            if (System.currentTimeMillis() <= backKeyPressedTime + 1000) {
+                finish()
+            }
         }
     }
 }

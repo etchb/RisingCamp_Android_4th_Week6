@@ -1,4 +1,4 @@
-package com.bhongj.rc_week6.src.main.search
+package com.bhongj.rc_week6.src.main.search.scr
 
 import com.bhongj.rc_week6.src.main.search.restrntModel.GyungkiRestrntResponse
 
