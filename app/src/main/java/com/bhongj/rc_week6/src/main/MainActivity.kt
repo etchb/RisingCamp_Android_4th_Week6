@@ -1,7 +1,7 @@
 package com.bhongj.rc_week6.src.main
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.bhongj.rc_week6.R
 import com.bhongj.rc_week6.config.ApplicationClass
 import com.bhongj.rc_week6.config.BaseActivity
@@ -11,7 +11,14 @@ import com.bhongj.rc_week6.src.main.issue.IssueFragment
 import com.bhongj.rc_week6.src.main.myProfile.MyKakaoProfileFragment
 import com.bhongj.rc_week6.src.main.myProfile.MyProfileFragment
 import com.bhongj.rc_week6.src.main.search.SearchFragment
-import com.bhongj.rc_week6.src.splash.SplashActivity
+import com.bhongj.rc_week6.src.main.search.map.GoogleMapFragment
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
@@ -38,7 +45,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 R.id.btm_item_discount -> {
                     supportFragmentManager.beginTransaction()
 //                        .setCustomAnimations(androidx.appcompat.R.anim.abc_fade_in, androidx.appcompat.R.anim.abc_fade_out)
-                        .replace(R.id.frmlay_main, DiscountFragment())
+//                        .replace(R.id.frmlay_main, DiscountFragment())
+                        .replace(R.id.frmlay_main, GoogleMapFragment())
                         .commitAllowingStateLoss()
                     return@setOnItemSelectedListener true
                 }
